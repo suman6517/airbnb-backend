@@ -1,0 +1,44 @@
+package com.suman.project.hotelBooking.entity;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "hotel")
+public class Hotel
+{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    private String city;
+
+    @Column(columnDefinition = "TEXT[]")
+    private String[] photo;
+
+
+    @Column(columnDefinition = "TEXT[]")
+    private String[] entities;
+
+    @CreationTimestamp
+    private LocalDateTime createTime;
+
+    @UpdateTimestamp
+    private LocalDateTime updateTime;
+
+    @Embedded
+    private HotelContactInfo contactInfo;
+
+    @Column(nullable = false)
+    private Boolean active;
+}
