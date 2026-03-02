@@ -5,6 +5,7 @@ import com.suman.project.hotelBooking.entity.Hotel;
 import com.suman.project.hotelBooking.entity.Room;
 import com.suman.project.hotelBooking.exception.ResourceNotFoundException;
 import com.suman.project.hotelBooking.repository.HotelRepository;
+import com.suman.project.hotelBooking.repository.RoomRepository;
 import com.suman.project.hotelBooking.service.HotelService;
 import com.suman.project.hotelBooking.service.InventoryService;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class HotelServiceImplimentation implements HotelService
+public class HotelServiceImplementation implements HotelService
 {
 
     private final HotelRepository hotelRepository;
     private final ModelMapper modelMapper;
     private final InventoryService inventoryService;
+    private final RoomRepository roomRepository;
     @Override
     public HotelDto createHotel(HotelDto hotelDto)
     {
@@ -66,10 +68,11 @@ public class HotelServiceImplimentation implements HotelService
 
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() ->new ResourceNotFoundException("Hotel with Id " + id + " not found"));
-        hotelRepository.delete(hotel);
+        hotelRepository.deleteById(id);
         for(Room room : hotel.getRooms())
         {
-            inventoryService.deleteFutureInventoryes(room);
+            inventoryService.deleteAllInventoryes(room);
+            roomRepository.deleteById(room.getId());
         }
 
         return true;

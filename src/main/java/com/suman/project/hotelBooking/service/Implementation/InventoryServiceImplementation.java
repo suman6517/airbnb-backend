@@ -4,7 +4,6 @@ import com.suman.project.hotelBooking.entity.Inventory;
 import com.suman.project.hotelBooking.entity.Room;
 import com.suman.project.hotelBooking.repository.InventoryRepository;
 import com.suman.project.hotelBooking.service.InventoryService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ import java.time.LocalDate;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class InventoryServiceImplimentation implements InventoryService
+public class InventoryServiceImplementation implements InventoryService
 {
     private final InventoryRepository inventoryRepository;
 
@@ -44,8 +43,8 @@ public class InventoryServiceImplimentation implements InventoryService
     }
 
     @Override
-    public void deleteFutureInventoryes(Room room) {
-        LocalDate today = LocalDate.now();
-        inventoryRepository.deleteByDateAfterAndRoom(today , room);
+    public void deleteAllInventoryes(Room room) {
+
+        inventoryRepository.deleteByAndRoom(room);
     }
 }
