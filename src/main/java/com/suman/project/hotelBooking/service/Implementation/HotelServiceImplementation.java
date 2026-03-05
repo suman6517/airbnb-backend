@@ -1,6 +1,8 @@
 package com.suman.project.hotelBooking.service.Implementation;
 
 import com.suman.project.hotelBooking.dto.HotelDto;
+import com.suman.project.hotelBooking.dto.HotelInfoDto;
+import com.suman.project.hotelBooking.dto.RoomDto;
 import com.suman.project.hotelBooking.entity.Hotel;
 import com.suman.project.hotelBooking.entity.Room;
 import com.suman.project.hotelBooking.exception.ResourceNotFoundException;
@@ -13,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -94,5 +98,19 @@ public class HotelServiceImplementation implements HotelService
         {
             inventoryService.initializeRoomForAYear(room);
         }
+    }
+
+    @Override
+    public HotelInfoDto getHotelInfoById(Long hotelId)
+    {
+        Hotel hotel = hotelRepository.findById(hotelId)
+                .orElseThrow(() ->new ResourceNotFoundException("Hotel with Id " + hotelId + " not found"));
+
+        List<RoomDto> rooms = hotel.getRooms()
+                .stream()
+                .map((element) -> modelMapper.map(element , RoomDto.class))
+                .toList();
+
+        return new HotelInfoDto(modelMapper.map(hotel, HotelDto.class), rooms);
     }
 }

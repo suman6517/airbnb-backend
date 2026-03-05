@@ -5,10 +5,8 @@ import com.suman.project.hotelBooking.entity.enums.Gender;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
+
 import java.util.Set;
 
 @Getter
@@ -32,12 +30,6 @@ public class Guest
     private Gender gender;
 
     private Integer age;
-
-//    @CreationTimestamp
-//    private LocalDateTime createTime;
-//
-//    @UpdateTimestamp
-//    private LocalDateTime updateTime;
 
     @ManyToMany(mappedBy = "guests")
     private Set<Booking> bookings;

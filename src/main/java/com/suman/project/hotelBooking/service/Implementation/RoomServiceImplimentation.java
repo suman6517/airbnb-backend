@@ -37,8 +37,8 @@ public class RoomServiceImplimentation implements RoomService
                 .orElseThrow(() ->new ResourceNotFoundException("Hotel with Id " + hotelId + " not found"));
 
         Room room = modelMapper.map(roomDto, Room.class);
-
         room.setHotel(hotel);
+
         room = roomRepository.save(room);
         if(hotel.getActive())
         {

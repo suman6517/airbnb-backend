@@ -3,6 +3,9 @@ package com.suman.project.hotelBooking.entity.enums;
 public enum BookingStatus
 {
     RESERVED,
+    GUEST_ADDED,
+    PAYMENT_PENDING,
     CONFIRMED,
-    CANCELLED
+    CANCELLED,
+    EXPIRED
 }
