@@ -1,6 +1,7 @@
 package com.suman.project.hotelBooking.service;
 
 import com.suman.project.hotelBooking.dto.HotelDto;
+import com.suman.project.hotelBooking.dto.HotelInfoDto;
 import com.suman.project.hotelBooking.entity.Hotel;
 
 public interface HotelService
@@ -16,4 +17,5 @@ public interface HotelService
     void activateHotel (Long id);
 
 
+    HotelInfoDto getHotelInfoById(Long hotelId);
 }
