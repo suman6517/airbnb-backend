@@ -20,6 +20,12 @@ public class HotelBrowseController
     private final InventoryService inventoryService;
     private final HotelService hotelService;
 
+    /**
+     * Searches hotels using the provided criteria and returns a paginated list of matching hotel prices.
+     *
+     * @param hotelSearchRequestDto search criteria (e.g., location, dates, occupancy, filters)
+     * @return a Page of HotelPriceDto containing hotels and their pricing that match the search criteria
+     */
     @GetMapping("/search")
     public ResponseEntity<Page<HotelPriceDto>> searchHotels(@RequestBody HotelSearchRequestDto hotelSearchRequestDto)
     {

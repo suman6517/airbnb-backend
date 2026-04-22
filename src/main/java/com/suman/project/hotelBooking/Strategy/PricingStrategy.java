@@ -9,5 +9,11 @@ import java.math.BigDecimal;
 
 public interface PricingStrategy
 {
-    BigDecimal calculatePrice(Inventory inventory);
+    /**
+ * Calculate the price for the given inventory.
+ *
+ * @param inventory the inventory data used to determine pricing
+ * @return the calculated price as a BigDecimal
+ */
+BigDecimal calculatePrice(Inventory inventory);
 }

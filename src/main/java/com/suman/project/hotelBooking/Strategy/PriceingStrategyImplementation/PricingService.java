@@ -9,6 +9,13 @@ import java.math.BigDecimal;
 @Service
 public class PricingService
 {
+    /**
+     * Calculates a dynamic hotel price for the given inventory by composing base pricing with
+     * surge, occupancy, urgency, and holiday pricing strategies.
+     *
+     * @param inventory the inventory item (room/date/context) for which to compute the price
+     * @return the computed dynamic price as a BigDecimal
+     */
     public BigDecimal calculateDynamicPrice(Inventory inventory)
     {
         PricingStrategy pricingStrategy = new BasePricingStrategy();

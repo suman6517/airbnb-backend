@@ -30,6 +30,15 @@ public class InventoryServiceImplementation implements InventoryService
     private final ModelMapper modelMapper;
     private final HotelMinPriceRepository hotelMinPriceRepository;
 
+    /**
+     * Creates and persists daily Inventory records for the given room for the next year.
+     *
+     * Each Inventory covers one calendar day from today through the same date one year from now (inclusive)
+     * and is initialized with zero bookings/reservations, the room's price and total count, surge factor of 1,
+     * the room's hotel and city, and marked open (not closed).
+     *
+     * @param room the Room to initialize inventory for
+     */
     @Override
     public void initializeRoomForAYear(Room room)
     {
@@ -55,6 +64,11 @@ public class InventoryServiceImplementation implements InventoryService
 
     }
 
+    /**
+     * Deletes all Inventory records associated with the specified Room.
+     *
+     * @param room the Room whose inventories will be removed
+     */
     @Override
     public void deleteAllInventoryes(Room room)
     {
@@ -63,6 +77,12 @@ public class InventoryServiceImplementation implements InventoryService
         inventoryRepository.deleteByAndRoom(room);
     }
 
+    /**
+     * Searches hotels that have available inventory for the requested date range and returns their minimum prices.
+     *
+     * @param hotelSearchRequestDto search criteria containing city, start and end dates, requested room count, page, and page size
+     * @return a page of {@code HotelPriceDto} entries for hotels that have availability for every night in the requested range; each entry includes the hotel's minimum price information for that range
+     */
     @Override
     public Page<HotelPriceDto> searchHotels(HotelSearchRequestDto hotelSearchRequestDto)
     {

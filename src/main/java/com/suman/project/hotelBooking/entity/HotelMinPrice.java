@@ -39,6 +39,14 @@ public class HotelMinPrice
     private LocalDateTime updateTime;
 
 
+    /**
+     * Create a HotelMinPrice for the specified hotel and date.
+     *
+     * Price, id, createTime and updateTime are not initialized by this constructor.
+     *
+     * @param hotel the Hotel associated with this minimum-price record
+     * @param date  the date for which the minimum price applies
+     */
     public HotelMinPrice(Hotel hotel, LocalDate date)
     {
         this.hotel = hotel;

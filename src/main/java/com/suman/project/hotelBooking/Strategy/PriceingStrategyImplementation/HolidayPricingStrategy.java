@@ -14,6 +14,12 @@ public class HolidayPricingStrategy  implements PricingStrategy
 
     private final PricingStrategy pricingStrategy;
 
+    /**
+     * Calculate the booking price for the given inventory and apply a holiday markup when applicable.
+     *
+     * @param inventory the inventory item (room/booking context) to price
+     * @return the final price for the provided inventory after applying a 25% holiday markup when the date is a holiday
+     */
     @Override
     public BigDecimal calculatePrice(Inventory inventory)
     {

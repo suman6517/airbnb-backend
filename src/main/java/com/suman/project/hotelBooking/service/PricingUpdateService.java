@@ -5,7 +5,11 @@ import org.springframework.stereotype.Service;
 
 public interface PricingUpdateService
 {
-    // Schedular to update the inventory and HotelMinPrice tables every hour
+    /**
+ * Triggers an hourly update of inventory and HotelMinPrice table entries.
+ *
+ * Implementations perform the necessary updates to inventory and minimum-price records for hotels.
+ */
 
     public void UpdatePrices();
 }
