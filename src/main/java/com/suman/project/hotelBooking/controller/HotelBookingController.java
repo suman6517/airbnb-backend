@@ -5,7 +5,6 @@ import com.suman.project.hotelBooking.dto.BookingDto;
 import com.suman.project.hotelBooking.dto.BookingRequestDto;
 import com.suman.project.hotelBooking.dto.GuestDto;
 import com.suman.project.hotelBooking.service.BookingService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

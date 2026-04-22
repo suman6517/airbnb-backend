@@ -2,6 +2,7 @@ package com.suman.project.hotelBooking.controller;
 
 import com.suman.project.hotelBooking.dto.HotelDto;
 import com.suman.project.hotelBooking.dto.HotelInfoDto;
+import com.suman.project.hotelBooking.dto.HotelPriceDto;
 import com.suman.project.hotelBooking.dto.HotelSearchRequestDto;
 import com.suman.project.hotelBooking.service.HotelService;
 import com.suman.project.hotelBooking.service.InventoryService;
@@ -20,9 +21,9 @@ public class HotelBrowseController
     private final HotelService hotelService;
 
     @GetMapping("/search")
-    public ResponseEntity<Page<HotelDto>> searchHotels(@RequestBody HotelSearchRequestDto hotelSearchRequestDto)
+    public ResponseEntity<Page<HotelPriceDto>> searchHotels(@RequestBody HotelSearchRequestDto hotelSearchRequestDto)
     {
-        Page<HotelDto> page = inventoryService.searchHotels(hotelSearchRequestDto);
+        var page = inventoryService.searchHotels(hotelSearchRequestDto);
         return ResponseEntity.ok(page);
 
     }
