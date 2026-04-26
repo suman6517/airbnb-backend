@@ -5,7 +5,9 @@ import com.suman.project.hotelBooking.dto.HotelInfoDto;
 import com.suman.project.hotelBooking.dto.RoomDto;
 import com.suman.project.hotelBooking.entity.Hotel;
 import com.suman.project.hotelBooking.entity.Room;
+import com.suman.project.hotelBooking.entity.User;
 import com.suman.project.hotelBooking.exception.ResourceNotFoundException;
+import com.suman.project.hotelBooking.exception.UnAuthorizeException;
 import com.suman.project.hotelBooking.repository.HotelRepository;
 import com.suman.project.hotelBooking.repository.RoomRepository;
 import com.suman.project.hotelBooking.service.HotelService;
@@ -13,6 +15,7 @@ import com.suman.project.hotelBooking.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +37,10 @@ public class HotelServiceImplementation implements HotelService
         log.info("Creating a new Hotel with name {}", hotelDto.getName());
         Hotel hotel = modelMapper.map(hotelDto, Hotel.class);
         hotel.setActive(false);
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        hotel.setOwner(user);
+
         hotel = hotelRepository.save(hotel);
         HotelDto createHotelDto = modelMapper.map(hotel, HotelDto.class);
         log.info("Created a new Hotel with Id {}", createHotelDto.getId());
@@ -48,6 +55,12 @@ public class HotelServiceImplementation implements HotelService
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() ->new ResourceNotFoundException("Hotel with Id " + id + " not found"));
 
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(!user.equals(hotel.getOwner()))
+        {
+            throw new UnAuthorizeException("This user does not own this hotel with Id " + id);
+        }
+
         return  modelMapper.map(hotel, HotelDto.class);
     }
 
@@ -58,6 +71,12 @@ public class HotelServiceImplementation implements HotelService
 
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() ->new ResourceNotFoundException("Hotel with Id " + id + " not found"));
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(!user.equals(hotel.getOwner()))
+        {
+            throw new UnAuthorizeException("This user does not own this hotel with Id " + id);
+        }
 
         modelMapper.map(hotelDto, hotel);
         hotel.setId(id);
@@ -72,6 +91,13 @@ public class HotelServiceImplementation implements HotelService
 
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() ->new ResourceNotFoundException("Hotel with Id " + id + " not found"));
+
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(!user.equals(hotel.getOwner()))
+        {
+            throw new UnAuthorizeException("This user does not own this hotel with Id " + id);
+        }
+        // Here Can be an Error
         hotelRepository.deleteById(id);
         for(Room room : hotel.getRooms())
         {
@@ -91,6 +117,12 @@ public class HotelServiceImplementation implements HotelService
         Hotel hotel = hotelRepository.findById(id)
                 .orElseThrow(() ->new ResourceNotFoundException("Hotel with Id " + id + " not found"));
 
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(!user.equals(hotel.getOwner()))
+        {
+            throw new UnAuthorizeException("This user does not own this hotel with Id " + id);
+        }
+
         hotel.setActive(true);
 
         // Assuming Only do it once
@@ -100,6 +132,7 @@ public class HotelServiceImplementation implements HotelService
         }
     }
 
+    // Public Method
     @Override
     public HotelInfoDto getHotelInfoById(Long hotelId)
     {
