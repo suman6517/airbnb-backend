@@ -6,12 +6,14 @@ import com.suman.project.hotelBooking.dto.GuestDto;
 import com.suman.project.hotelBooking.entity.*;
 import com.suman.project.hotelBooking.entity.enums.BookingStatus;
 import com.suman.project.hotelBooking.exception.ResourceNotFoundException;
+import com.suman.project.hotelBooking.exception.UnAuthorizeException;
 import com.suman.project.hotelBooking.repository.*;
 import com.suman.project.hotelBooking.service.BookingService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.awt.print.Book;
@@ -101,6 +103,12 @@ public class BookingServiceImplementation implements BookingService
             throw new IllegalStateException("Booking has already expired");
         }
 
+        User user = getCurrentUser();
+        if(user.equals(booking.getUser()))
+        {
+            throw new UnAuthorizeException("Booking Does Not Exist to this user with Id "+user.getId());
+        }
+
         if(booking.getBookingStatus() != BookingStatus.RESERVED)
         {
             throw new IllegalStateException("Booking is not under RESERVED state , cannot add guest");
@@ -109,7 +117,7 @@ public class BookingServiceImplementation implements BookingService
         for(GuestDto guestDto : guestDtoList)
         {
             Guest guest = modelMapper.map(guestDto, Guest.class);
-            guest.setUser(getCurrentUser());
+            guest.setUser(user);
             guest = guestRepository.save(guest);
             booking.getGuests().add(guest);
         }
@@ -128,8 +136,10 @@ public class BookingServiceImplementation implements BookingService
 
     public User getCurrentUser()
     {
-        User user = new User();
-        user.setId(1L);  // TODO: Remove the dummy user
-        return user;
+//        User user = new User();
+//        user.setId(1L);  // TODO: Remove the dummy user
+//        return user;
+
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
