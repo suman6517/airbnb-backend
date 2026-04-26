@@ -35,6 +35,11 @@ public class PricingUpdateServiceImplementation implements PricingUpdateService
     private final PricingService pricingService;
 
 
+    /**
+     * Iterates through all hotels in paged batches and updates each hotel's prices.
+     *
+     * <p>Scheduled to run hourly. Fetches hotels in pages of 100 and processes pages until none remain.</p>
+     */
     @Scheduled(cron = "0 0 * * * *")
     @Override
     public void UpdatePrices()
@@ -55,6 +60,12 @@ public class PricingUpdateServiceImplementation implements PricingUpdateService
         }
     }
 
+    /**
+     * Updates and persists dynamic prices for the given hotel's inventories from today through one year from today,
+     * and computes and persists the per-day minimum prices for that period.
+     *
+     * @param hotel the hotel whose inventories and daily minimum prices will be recalculated and saved
+     */
     private void updateHotelPrices(Hotel hotel)
     {
         log.info("Updating Prices for Hotel Booking... for hotel {}" , hotel.getId());
@@ -69,6 +80,14 @@ public class PricingUpdateServiceImplementation implements PricingUpdateService
 
     }
 
+    /**
+     * Compute and persist the minimum price for each date for the given hotel using the provided inventories.
+     *
+     * @param hotel the hotel for which daily minimum prices will be ensured
+     * @param inventoryList the inventories to compute per-day minimum prices from
+     * @param startDate the start of the intended date range (parameter present for API consistency; not used by this implementation)
+     * @param endDate the end of the intended date range (parameter present for API consistency; not used by this implementation)
+     */
     private void updateHotelMinPrice(Hotel hotel, List<Inventory> inventoryList, LocalDate startDate, LocalDate endDate) {
         // Complete minimum price per day for the hotel
         Map<LocalDate, BigDecimal> dailyMinPrice = inventoryList.stream()
@@ -97,6 +116,11 @@ public class PricingUpdateServiceImplementation implements PricingUpdateService
     }
 
 
+    /**
+     * Update each inventory's price using the pricing service and persist the modified inventories.
+     *
+     * @param inventoryList list of Inventory entities whose price will be recalculated and saved
+     */
     private  void updateInventoryPrices(List<Inventory> inventoryList)
     {
         inventoryList.forEach(inventory -> {

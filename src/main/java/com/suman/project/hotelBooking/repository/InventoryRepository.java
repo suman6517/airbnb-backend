@@ -37,6 +37,17 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long>
             Pageable pageable
     );
 
+    /**
+     * Finds inventory entries for a specific room and date range that have at least the requested available units.
+     *
+     * Matching rows are locked with a PESSIMISTIC_WRITE lock for the current transaction.
+     *
+     * @param roomId    the identifier of the room
+     * @param startDate the start date of the inclusive date range
+     * @param endDate   the end date of the inclusive date range
+     * @param roomCount the minimum number of available units required per day
+     * @return a list of Inventory entries that match the criteria; may be empty
+     */
     @Query("""
             SELECT i
             FROM Inventory i
@@ -53,7 +64,15 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long>
             @Param("roomCount") Integer roomCount
     );
 
-    List<Inventory> findByHotelAndDateBetween(Hotel hotel, LocalDate startDate, LocalDate endDate);
+    /**
+ * Retrieves inventory records for the specified hotel within the given date range.
+ *
+ * @param hotel the hotel whose inventory to retrieve
+ * @param startDate the start of the date range (inclusive)
+ * @param endDate the end of the date range (inclusive)
+ * @return a list of Inventory entries for the hotel with `date` between `startDate` and `endDate`
+ */
+List<Inventory> findByHotelAndDateBetween(Hotel hotel, LocalDate startDate, LocalDate endDate);
 
 
 }
