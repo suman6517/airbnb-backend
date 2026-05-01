@@ -7,6 +7,7 @@ import com.suman.project.hotelBooking.entity.User;
 import com.suman.project.hotelBooking.entity.enums.BookingStatus;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -22,4 +23,5 @@ public class BookingDto
     private LocalDateTime updateTime;
     private BookingStatus bookingStatus;
     private Set<Guest> guests;
+    private BigDecimal amount;
 }
