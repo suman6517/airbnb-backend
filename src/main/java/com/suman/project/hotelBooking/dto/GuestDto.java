@@ -11,10 +11,7 @@ import java.util.Set;
 public class GuestDto
 {
     private Long id;
-    private User user;
     private String name;
     private Gender gender;
     private Integer age;
-    private Set<Booking> bookings;
-
 }

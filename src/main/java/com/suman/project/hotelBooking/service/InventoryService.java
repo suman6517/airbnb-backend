@@ -1,10 +1,10 @@
 package com.suman.project.hotelBooking.service;
 
-import com.suman.project.hotelBooking.dto.HotelDto;
-import com.suman.project.hotelBooking.dto.HotelPriceDto;
-import com.suman.project.hotelBooking.dto.HotelSearchRequestDto;
+import com.suman.project.hotelBooking.dto.*;
 import com.suman.project.hotelBooking.entity.Room;
 import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface InventoryService
 {
@@ -14,4 +14,8 @@ public interface InventoryService
 
 
     Page<HotelPriceDto> searchHotels(HotelSearchRequestDto hotelSearchRequestDto);
+
+    List<InventoryDto> getAllInventoryByRoom(Long roomId);
+
+    void updateInventory(Long roomId, UpdateInventoryRequestDto updateInventoryRequestDto);
 }

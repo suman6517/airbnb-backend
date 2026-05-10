@@ -20,10 +20,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.suman.project.hotelBooking.utility.AppUtils.getCurrentUser;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class RoomServiceImplimentation implements RoomService
+public class RoomServiceImplementation implements RoomService
 {
     private final RoomRepository roomRepository;
     private final ModelMapper modelMapper;
@@ -109,5 +111,32 @@ public class RoomServiceImplimentation implements RoomService
 
 
 
+    }
+
+    @Override
+    public RoomDto updateRoomById(Long hotelId, Long roomId, RoomDto roomDto)
+    {
+        log.info("Updating a  Room with Id {} of Hotel with Id {}", roomId , hotelId);
+
+        Hotel hotel = hotelRepository.findById(hotelId)
+                .orElseThrow(() ->new ResourceNotFoundException("Hotel with Id " + hotelId + " not found"));
+
+        User user = getCurrentUser();
+        if(!user.equals(hotel.getOwner()))
+        {
+            throw new UnAuthorizeException("This user does not own this hotel with Id " + hotelId);
+        }
+
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() ->new ResourceNotFoundException("Room with Id " + roomId + " not found"));
+
+        modelMapper.map(roomDto, room);
+        room.setId(roomId);
+
+        //TODO: If Price or Inventory is Updated , then update the inventory for this room
+
+        room = roomRepository.save(room);
+
+        return modelMapper.map(room, RoomDto.class);
     }
 }

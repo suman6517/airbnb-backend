@@ -4,6 +4,8 @@ import com.suman.project.hotelBooking.dto.HotelDto;
 import com.suman.project.hotelBooking.dto.HotelInfoDto;
 import com.suman.project.hotelBooking.entity.Hotel;
 
+import java.util.List;
+
 public interface HotelService
 {
     HotelDto createHotel (HotelDto hotelDto);
@@ -18,4 +20,6 @@ public interface HotelService
 
 
     HotelInfoDto getHotelInfoById(Long hotelId);
+
+    List<HotelDto> getAllHotels();
 }
