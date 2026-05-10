@@ -22,6 +22,6 @@ public class BookingDto
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private BookingStatus bookingStatus;
-    private Set<Guest> guests;
+    private Set<GuestDto> guests;
     private BigDecimal amount;
 }
